@@ -8,13 +8,18 @@ function Navbar() {
 
         <NavLink to="/" className="logo">
           <span className="logo-mark">R</span>
-          <span className="logo-text">React Activities</span>
+
+          <div className="logo-copy">
+            <span className="logo-text">React Activity Portal</span>
+            {/* <span className="logo-subtext">Interactive React Workspace</span> */}
+          </div>
         </NavLink>
 
         <nav className="nav-menu">
 
           <NavLink
             to="/"
+            end
             className={({ isActive }) =>
               isActive ? "nav-item active" : "nav-item"
             }
