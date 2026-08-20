@@ -1,189 +1,121 @@
 import { useState } from "react";
 import "./pages.css";
 
-function Activity4() {
-  const [customerName, setCustomerName] = useState("");
-  const [consumption, setConsumption] = useState("");
+function Activity3() {
+  const [password, setPassword] = useState("");
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
 
-  const calculateBill = (e) => {
+  const handleCheckPassword = (e) => {
     e.preventDefault();
 
-    if (customerName.trim() === "" && consumption === "") {
-      setError("Please enter customer name and consumption.");
+    if (password === "") {
+      setError("Please enter a password.");
       setResult(null);
       return;
     }
 
-    if (customerName.trim() === "") {
-      setError("Please enter the customer name.");
-      setResult(null);
-      return;
-    }
+    let strength = "";
+    let message = "";
+    let level = 0;
 
-    if (consumption === "") {
-      setError("Please enter the electricity consumption.");
-      setResult(null);
-      return;
-    }
-
-    const kwh = Number(consumption);
-
-    if (Number.isNaN(kwh) || kwh < 0) {
-      setError("Please enter a valid consumption value.");
-      setResult(null);
-      return;
-    }
-
-    let rate;
-
-    if (kwh <= 100) {
-      rate = 10;
-    } else if (kwh <= 200) {
-      rate = 12;
-    } else if (kwh <= 300) {
-      rate = 15;
+    if (password.length < 6) {
+      strength = "Weak Password";
+      message = "Status: Weak – Create a stronger password.";
+      level = 1;
+    } else if (password.length <= 9) {
+      strength = "Medium Password";
+      message = "Status: Weak – Create a stronger password.";
+      level = 2;
     } else {
-      rate = 18;
-    }
-
-    const totalBill = kwh * rate;
-
-    let usageStatus;
-
-    if (totalBill >= 5000) {
-      usageStatus = "High Electricity Usage";
-    } else {
-      usageStatus = "Normal Electricity Usage";
+      strength = "Strong Password";
+      message = "Status: Strong – You can use this password.";
+      level = 3;
     }
 
     setResult({
-      customerName: customerName.trim(),
-      consumption: kwh,
-      rate,
-      totalBill,
-      usageStatus,
+      strength,
+      message,
+      level,
+      length: password.length,
     });
 
     setError("");
   };
 
-  const clearForm = () => {
-    setCustomerName("");
-    setConsumption("");
+  const handleClear = () => {
+    setPassword("");
     setResult(null);
     setError("");
-  };
-
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-PH", {
-      style: "currency",
-      currency: "PHP",
-      minimumFractionDigits: 2,
-    }).format(value);
   };
 
   return (
     <main className="activity-page">
       <div className="activity-container">
         <div className="activity-title">
-          <span>ACTIVITY 04</span>
-          <h1>Electricity Bill Calculator</h1>
+          <span>ACTIVITY 03</span>
+          <h1>Password Strength Checker</h1>
           <p>
-            Calculate a customer's electricity bill based on kWh consumption
-            and tiered electricity rates.
+            Classify a password by length as Weak, Medium, or Strong.
           </p>
         </div>
 
-        <div className="grade-wrapper electricity-wrapper">
-          <form className="grade-form" onSubmit={calculateBill}>
+        <div className="grade-wrapper activity3-wrapper">
+          <form className="grade-form" onSubmit={handleCheckPassword}>
             <div className="form-heading">
               <div>
-                <span className="form-eyebrow">BILL CALCULATION</span>
-                <h2>Electricity Usage</h2>
+                <span className="form-eyebrow">PASSWORD CHECK</span>
+                <h2>Password Strength</h2>
               </div>
 
-              <div className="electricity-badge">
-                <span>kWh</span>
-                <small>USAGE</small>
-              </div>
-            </div>
-
-            <div className="input-grid">
-              <div className="input-group">
-                <label htmlFor="customerName">Customer Name</label>
-
-                <div className="input-shell">
-                  <span className="input-icon">C</span>
-
-                  <input
-                    id="customerName"
-                    type="text"
-                    placeholder="Enter customer name"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="consumption">Consumption (kWh)</label>
-
-                <div className="input-shell">
-                  <span className="input-icon">⚡</span>
-
-                  <input
-                    id="consumption"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="e.g. 250"
-                    value={consumption}
-                    onChange={(e) => setConsumption(e.target.value)}
-                  />
-                </div>
+              <div className="activity3-badge">
+                <strong>{password.length}</strong>
+                <span>CHARS</span>
               </div>
             </div>
 
-            <div className="rate-guide">
-              <div className="rate-guide-title">
-                <span>RATE GUIDE</span>
-                <small>Rate depends on total consumption</small>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+
+              <div className="input-shell">
+                <span className="input-icon">P</span>
+
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="activity3-guide">
+              <div className="activity3-guide-item">
+                <span>&lt; 6</span>
+                <strong>Weak</strong>
               </div>
 
-              <div className="rate-grid">
-                <div className="rate-item">
-                  <strong>₱10</strong>
-                  <span>0 – 100 kWh</span>
-                </div>
+              <div className="activity3-guide-item">
+                <span>6 – 9</span>
+                <strong>Medium</strong>
+              </div>
 
-                <div className="rate-item">
-                  <strong>₱12</strong>
-                  <span>101 – 200 kWh</span>
-                </div>
-
-                <div className="rate-item">
-                  <strong>₱15</strong>
-                  <span>201 – 300 kWh</span>
-                </div>
-
-                <div className="rate-item">
-                  <strong>₱18</strong>
-                  <span>Above 300 kWh</span>
-                </div>
+              <div className="activity3-guide-item">
+                <span>10+</span>
+                <strong>Strong</strong>
               </div>
             </div>
 
             <div className="grade-actions">
               <button type="submit" className="submit-btn">
-                Calculate Bill
+                Check Password
               </button>
 
               <button
                 type="button"
                 className="clear-btn"
-                onClick={clearForm}
+                onClick={handleClear}
               >
                 Clear
               </button>
@@ -194,62 +126,63 @@ function Activity4() {
                 <div className="message-icon">!</div>
 
                 <div>
-                  <strong>Unable to calculate</strong>
+                  <strong>Unable to check password</strong>
                   <p>{error}</p>
                 </div>
               </div>
             )}
 
             {result && (
-              <div className="grade-result electricity-result">
+              <div className="grade-result activity3-result">
                 <div className="result-topline">
                   <div>
                     <span className="result-eyebrow">
-                      CALCULATION RESULT
+                      PASSWORD STATUS
                     </span>
-
-                    <h3>{result.usageStatus}</h3>
+                    <h3>{result.strength}</h3>
                   </div>
 
-                  <div className="result-score electricity-total">
-                    ₱
+                  <div
+                    className={`result-score activity3-level-${result.level}`}
+                  >
+                    {result.level}
                   </div>
+                </div>
+
+                <div className="activity3-strength">
+                  <div
+                    className={`strength-bar ${
+                      result.level >= 1 ? "strength-active" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    className={`strength-bar ${
+                      result.level >= 2 ? "strength-active" : ""
+                    }`}
+                  ></div>
+
+                  <div
+                    className={`strength-bar ${
+                      result.level >= 3 ? "strength-active" : ""
+                    }`}
+                  ></div>
                 </div>
 
                 <div className="result-details">
                   <div className="result-row">
-                    <span>Customer Name</span>
-                    <strong>{result.customerName}</strong>
+                    <span>Password Status</span>
+                    <strong>{result.strength}</strong>
                   </div>
 
                   <div className="result-row">
-                    <span>Consumption</span>
-                    <strong>{result.consumption} kWh</strong>
+                    <span>Character Length</span>
+                    <strong>{result.length} characters</strong>
                   </div>
 
                   <div className="result-row">
-                    <span>Rate Applied</span>
-                    <strong>₱{result.rate.toFixed(2)} per kWh</strong>
-                  </div>
-
-                  <div className="result-row">
-                    <span>Total Bill</span>
-                    <strong className="bill-total">
-                      {formatCurrency(result.totalBill)}
-                    </strong>
-                  </div>
-
-                  <div className="result-row">
-                    <span>Usage Status</span>
-                    <strong
-                      className={
-                        result.totalBill >= 5000
-                          ? "usage-status usage-high"
-                          : "usage-status usage-normal"
-                      }
-                    >
-                      {result.usageStatus}
-                    </strong>
+                    <span>Strength Message</span>
+                    <strong>{result.message}</strong>
                   </div>
                 </div>
               </div>
@@ -261,4 +194,4 @@ function Activity4() {
   );
 }
 
-export default Activity4;
+export default Activity3;
