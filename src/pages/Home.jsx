@@ -128,6 +128,7 @@ function Home() {
 
         <div className="activities-grid">
 
+          {/* ACTIVITY 1 */}
           <article className="activity-card">
 
             <div className="activity-card-number">
@@ -159,6 +160,7 @@ function Home() {
 
           </article>
 
+          {/* ACTIVITY 2 */}
           <article className="activity-card">
 
             <div className="activity-card-number">
@@ -190,6 +192,7 @@ function Home() {
 
           </article>
 
+          {/* ACTIVITY 3 */}
           <article className="activity-card">
 
             <div className="activity-card-number">
@@ -221,6 +224,7 @@ function Home() {
 
           </article>
 
+          {/* ACTIVITY 4 */}
           <article className="activity-card">
 
             <div className="activity-card-number">
@@ -244,6 +248,38 @@ function Home() {
 
             <Link
               to="/activity-4"
+              className="activity-card-btn"
+            >
+              <span>Open Activity</span>
+              <span>→</span>
+            </Link>
+
+          </article>
+
+          {/* ACTIVITY 5 - ADDED */}
+          <article className="activity-card">
+
+            <div className="activity-card-number">
+              05
+            </div>
+
+            <div className="activity-card-content">
+
+              <span className="activity-card-tag">
+                State Management
+              </span>
+
+              <h3>To-Do List</h3>
+
+              <p>
+                Manage tasks using React state, handle user
+                input, and dynamically add and remove tasks.
+              </p>
+
+            </div>
+
+            <Link
+              to="/activity-5"
               className="activity-card-btn"
             >
               <span>Open Activity</span>

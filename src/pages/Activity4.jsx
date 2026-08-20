@@ -1,197 +1,414 @@
 import { useState } from "react";
 import "./pages.css";
 
-function Activity3() {
-  const [password, setPassword] = useState("");
-  const [result, setResult] = useState(null);
+function Activity4() {
+  const [customerName, setCustomerName] = useState("");
+  const [consumption, setConsumption] = useState("");
+  const [rateApplied, setRateApplied] = useState("");
+  const [totalBill, setTotalBill] = useState("");
+  const [usageStatus, setUsageStatus] = useState("");
   const [error, setError] = useState("");
 
-  const handleCheckPassword = (e) => {
-    e.preventDefault();
+  const calculateBill = () => {
+    setError("");
+    setRateApplied("");
+    setTotalBill("");
+    setUsageStatus("");
 
-    if (password === "") {
-      setError("Please enter a password.");
-      setResult(null);
+    if (customerName.trim() === "") {
+      setError("Please enter the customer name.");
       return;
     }
 
-    let strength = "";
-    let message = "";
-    let level = 0;
-
-    if (password.length < 6) {
-      strength = "Weak Password";
-      message = "Status: Weak – Create a stronger password.";
-      level = 1;
-    } else if (password.length <= 9) {
-      strength = "Medium Password";
-      message = "Status: Weak – Create a stronger password.";
-      level = 2;
-    } else {
-      strength = "Strong Password";
-      message = "Status: Strong – You can use this password.";
-      level = 3;
+    if (consumption === "") {
+      setError("Please enter the electricity consumption.");
+      return;
     }
 
-    setResult({
-      strength,
-      message,
-      level,
-      length: password.length,
-    });
+    const kWh = Number(consumption);
 
-    setError("");
+    if (isNaN(kWh)) {
+      setError("Consumption must be a valid number.");
+      return;
+    }
+
+    if (kWh < 0) {
+      setError("Consumption cannot be negative.");
+      return;
+    }
+
+    let rate;
+
+    if (kWh <= 100) {
+      rate = 10;
+    } else if (kWh <= 200) {
+      rate = 12;
+    } else if (kWh <= 300) {
+      rate = 15;
+    } else {
+      rate = 18;
+    }
+
+    const bill = kWh * rate;
+
+    let status;
+
+    if (bill >= 5000) {
+      status = "High Electricity Usage";
+    } else {
+      status = "Normal Electricity Usage";
+    }
+
+    setRateApplied(`₱${rate} per kWh`);
+
+    setTotalBill(
+      `₱${bill.toLocaleString("en-PH", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    );
+
+    setUsageStatus(status);
   };
 
-  const handleClear = () => {
-    setPassword("");
-    setResult(null);
+  const clearForm = () => {
+    setCustomerName("");
+    setConsumption("");
+    setRateApplied("");
+    setTotalBill("");
+    setUsageStatus("");
     setError("");
   };
 
   return (
     <main className="activity-page">
+
       <div className="activity-container">
+
+
         <div className="activity-title">
-          <span>ACTIVITY 03</span>
-          <h1>Password Strength Checker</h1>
+
+          <span>
+            ACTIVITY 4
+          </span>
+
+          <h1>
+            Electricity Bill Calculator
+          </h1>
+
           <p>
-            Classify a password by length as Weak, Medium, or Strong.
+            Compute a bill from kWh consumption across tiered rates.
           </p>
+
         </div>
 
-        <div className="grade-wrapper activity3-wrapper">
-          <form className="grade-form" onSubmit={handleCheckPassword}>
+
+        <div className="electricity-wrapper">
+
+          <div className="grade-form">
+
             <div className="form-heading">
+
               <div>
-                <span className="form-eyebrow">PASSWORD CHECK</span>
-                <h2>Password Strength</h2>
+                <span className="form-eyebrow">
+                  ELECTRICITY CALCULATOR
+                </span>
+
+                <h2>
+                  Calculate Your Bill
+                </h2>
               </div>
 
-              <div className="activity3-badge">
-                <strong>{password.length}</strong>
-                <span>CHARS</span>
+              <div className="electricity-badge">
+
+                <span>
+                  ₱
+                </span>
+
+                <small>
+                  BILL
+                </small>
+
               </div>
+
             </div>
 
-            <div className="input-group">
-              <label htmlFor="password">Password</label>
 
-              <div className="input-shell">
-                <span className="input-icon">P</span>
+            <div className="input-grid">
 
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+              <div className="input-group">
+
+                <label>
+                  Customer Name
+                </label>
+
+                <div className="input-shell">
+
+                  <span className="input-icon">
+                    A
+                  </span>
+
+                  <input
+                    type="text"
+                    value={customerName}
+                    onChange={(e) =>
+                      setCustomerName(e.target.value)
+                    }
+                    placeholder="Enter customer name"
+                  />
+
+                </div>
+
               </div>
+
+
+           
+              <div className="input-group">
+
+                <label>
+                  Consumption (kWh)
+                </label>
+
+                <div className="input-shell">
+
+                  <span className="input-icon">
+                    #
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={consumption}
+                    onChange={(e) =>
+                      setConsumption(e.target.value)
+                    }
+                    placeholder="e.g. 250"
+                  />
+
+                </div>
+
+              </div>
+
             </div>
 
-            <div className="activity3-guide">
-              <div className="activity3-guide-item">
-                <span>&lt; 6</span>
-                <strong>Weak</strong>
+=
+            <div className="rate-guide">
+
+              <div className="rate-guide-title">
+
+                <span>
+                  RATE GUIDE
+                </span>
+
+                <small>
+                  Applied based on consumption
+                </small>
+
               </div>
 
-              <div className="activity3-guide-item">
-                <span>6 – 9</span>
-                <strong>Medium</strong>
+
+              <div className="rate-grid">
+
+                <div className="rate-item">
+
+                  <strong>
+                    ₱10
+                  </strong>
+
+                  <span>
+                    0–100 kWh
+                  </span>
+
+                </div>
+
+
+                <div className="rate-item">
+
+                  <strong>
+                    ₱12
+                  </strong>
+
+                  <span>
+                    101–200 kWh
+                  </span>
+
+                </div>
+
+
+                <div className="rate-item">
+
+                  <strong>
+                    ₱15
+                  </strong>
+
+                  <span>
+                    201–300 kWh
+                  </span>
+
+                </div>
+
+
+                <div className="rate-item">
+
+                  <strong>
+                    ₱18
+                  </strong>
+
+                  <span>
+                    Above 300 kWh
+                  </span>
+
+                </div>
+
               </div>
 
-              <div className="activity3-guide-item">
-                <span>10+</span>
-                <strong>Strong</strong>
-              </div>
             </div>
 
+
+      
             <div className="grade-actions">
-              <button type="submit" className="submit-btn">
-                Check Password
+
+              <button
+                type="button"
+                className="submit-btn"
+                onClick={calculateBill}
+              >
+                Calculate Bill
               </button>
 
               <button
                 type="button"
                 className="clear-btn"
-                onClick={handleClear}
+                onClick={clearForm}
               >
                 Clear
               </button>
+
             </div>
 
-            {error && (
-              <div className="grade-message error-message">
-                <div className="message-icon">!</div>
 
-                <div>
-                  <strong>Unable to check password</strong>
-                  <p>{error}</p>
-                </div>
+          
+            {error && (
+              <div className="grade-message">
+                {error}
               </div>
             )}
 
-            {result && (
-              <div className="grade-result activity3-result">
+
+         
+            {totalBill && (
+              <div className="grade-result">
+
                 <div className="result-topline">
+
                   <div>
+
                     <span className="result-eyebrow">
-                      PASSWORD STATUS
+                      BILL RESULT
                     </span>
-                    <h3>{result.strength}</h3>
+
+                    <h3>
+                      Electricity Bill
+                    </h3>
+
                   </div>
 
-                  <div
-                    className={`result-score activity3-level-${result.level}`}
-                  >
-                    {result.level}
+                  <div className="result-score">
+                    ₱
                   </div>
+
                 </div>
 
-                <div className="activity3-strength">
-                  <div
-                    className={`strength-bar ${
-                      result.level >= 1 ? "strength-active" : ""
-                    }`}
-                  ></div>
-
-                  <div
-                    className={`strength-bar ${
-                      result.level >= 2 ? "strength-active" : ""
-                    }`}
-                  ></div>
-
-                  <div
-                    className={`strength-bar ${
-                      result.level >= 3 ? "strength-active" : ""
-                    }`}
-                  ></div>
-                </div>
 
                 <div className="result-details">
-                  <div className="result-row">
-                    <span>Password Status</span>
-                    <strong>{result.strength}</strong>
-                  </div>
 
                   <div className="result-row">
-                    <span>Character Length</span>
-                    <strong>{result.length} characters</strong>
+
+                    <span>
+                      Customer Name
+                    </span>
+
+                    <strong>
+                      {customerName}
+                    </strong>
+
                   </div>
 
+
+             
                   <div className="result-row">
-                    <span>Strength Message</span>
-                    <strong>{result.message}</strong>
+
+                    <span>
+                      Consumption
+                    </span>
+
+                    <strong>
+                      {consumption} kWh
+                    </strong>
+
                   </div>
+
+
+              
+                  <div className="result-row">
+
+                    <span>
+                      Rate Applied
+                    </span>
+
+                    <strong>
+                      {rateApplied}
+                    </strong>
+
+                  </div>
+
+
+             
+                  <div className="result-row">
+
+                    <span>
+                      Total Bill
+                    </span>
+
+                    <strong className="bill-total">
+                      {totalBill}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="result-row">
+
+                    <span>
+                      Usage Status
+                    </span>
+
+                    <strong
+                      className={
+                        usageStatus === "High Electricity Usage"
+                          ? "usage-status usage-high"
+                          : "usage-status usage-normal"
+                      }
+                    >
+                      {usageStatus}
+                    </strong>
+
+                  </div>
+
                 </div>
+
               </div>
             )}
-          </form>
+
+          </div>
+
         </div>
+
       </div>
+
     </main>
   );
 }
 
-export default Activity3;
+export default Activity4;

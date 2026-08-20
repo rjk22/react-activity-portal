@@ -63,6 +63,15 @@ function Navbar() {
             Activity 4
           </NavLink>
 
+          <NavLink
+            to="/activity-5"
+            className={({ isActive }) =>
+              isActive ? "nav-item active" : "nav-item"
+            }
+          >
+            Activity 5
+          </NavLink>
+
         </nav>
 
       </div>
