@@ -2125,3 +2125,204 @@ html {
     text-align: left;
   }
 }
+
+.electricity-wrapper {
+  width: min(680px, 100%);
+}
+
+.electricity-badge {
+  min-width: 64px;
+  height: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 2px;
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.09),
+      rgba(56, 189, 248, 0.07)
+    );
+  color: #4f46e5;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 7px 18px rgba(79, 70, 229, 0.05);
+}
+
+.electricity-badge span {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.electricity-badge small {
+  color: #94a3b8;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.rate-guide {
+  margin-top: 4px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 13px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(248, 250, 252, 0.82),
+      rgba(241, 245, 249, 0.55)
+    );
+}
+
+.rate-guide-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 13px;
+}
+
+.rate-guide-title span {
+  color: #6366f1;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.rate-guide-title small {
+  color: #94a3b8;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.rate-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.rate-item {
+  padding: 11px 8px;
+  border: 1px solid rgba(148, 163, 184, 0.11);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.rate-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.2);
+  box-shadow: 0 7px 17px rgba(79, 70, 229, 0.055);
+}
+
+.rate-item strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.rate-item span {
+  color: #7b8798;
+  font-size: 8px;
+  font-weight: 650;
+}
+
+.electricity-result {
+  animation:
+    electricityResultIn
+    0.45s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.electricity-total {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.1),
+      rgba(56, 189, 248, 0.08)
+    );
+  color: #4f46e5;
+}
+
+.bill-total {
+  color: #4f46e5 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+
+.usage-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+
+.usage-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.usage-normal {
+  background: rgba(34, 197, 94, 0.08);
+  color: #15803d !important;
+}
+
+.usage-normal::before {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.usage-high {
+  background: rgba(245, 158, 11, 0.09);
+  color: #b45309 !important;
+}
+
+.usage-high::before {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+@keyframes electricityResultIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 650px) {
+  .rate-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rate-guide-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rate-grid {
+    grid-template-columns: 1fr;
+  }
+}
